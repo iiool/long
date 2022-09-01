@@ -1,0 +1,14 @@
+Sitemap: https://www.4khd.com/sitemap.xml
+Sitemap: https://www.4khd.com/news-sitemap.xml
+User-agent: *
+Allow: /*.js*
+Allow: /*.css*
+Allow: /*.png*
+Allow: /*.jpg*
+Allow: /*.jpeg*
+Allow: /*.gif*
+Allow: /*.bmp*
+Allow: /*.svg*
+Allow: /*.ico*
+Allow: /*.mp4*
+Allow: /*.avi*
