@@ -241,6 +241,14 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			'cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
 			'static.leadpages.net/leadbars/current/embed.js',
 			'booqable.com/v2/booqable.js',
+			'googleoptimize.com',
+			'cdna.hubpeople.com/js/widget_standalone_two_modes.js',
+			's3.tradingview.com',
+			'www.vbt.io/ext/vbtforms.js',
+			'cdn.callrail.com',
+			'documentcloud.adobe.com/view-sdk/main.js',
+			'static.cleverpush.com',
+			'js.afterpay.com',
 		];
 
 		$excluded_external = array_merge( $defaults, $this->options->get( 'exclude_js', [] ) );

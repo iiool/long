@@ -1,18 +1,14 @@
 <?php
-
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
-
-use WP_Rocket\Engine\Optimization\AbstractOptimization;
 
 /**
  * Abstract Optimization Parent Class for Google Fonts Optimizers.
  *
  * @since 3.8
  */
-abstract class AbstractGFOptimization extends AbstractOptimization {
-
+abstract class AbstractGFOptimization {
 	/**
 	 * Allowed display values.
 	 *
@@ -27,6 +23,35 @@ abstract class AbstractGFOptimization extends AbstractOptimization {
 		'fallback' => 1,
 		'optional' => 1,
 	];
+
+	/**
+	 * Flag for whether google fonts have been detected (Default: true)
+	 *
+	 * @since 3.8.8
+	 *
+	 * @var bool
+	 */
+	protected $has_google_fonts = true;
+
+	/**
+	 * Optimize Google Fonts
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	abstract public function optimize( $html): string;
+
+	/**
+	 * Check whether the optimizer has found google fonts on the page.
+	 *
+	 * @since 3.8.8
+	 *
+	 * @return bool Will default to true when extending classes have not set via the optimize() method.
+	 */
+	public function has_google_fonts() {
+		return $this->has_google_fonts;
+	}
 
 	/**
 	 * Returns font with display value.
@@ -78,5 +103,21 @@ abstract class AbstractGFOptimization extends AbstractOptimization {
 		}
 
 		return isset( $this->display_values[ $display ] ) ? $display : 'swap';
+	}
+
+	/**
+	 * Returns the optimized markup for Google Fonts
+	 *
+	 * @since 3.9.1
+	 *
+	 * @param string $url Google Fonts URL.
+	 *
+	 * @return string
+	 */
+	protected function get_optimized_markup( string $url ): string {
+		return sprintf(
+			'<link rel="preload" as="style" href="%1$s" /><link rel="stylesheet" href="%1$s" media="print" onload="this.media=\'all\'" /><noscript><link rel="stylesheet" href="%1$s" /></noscript>', // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+			$url
+		);
 	}
 }

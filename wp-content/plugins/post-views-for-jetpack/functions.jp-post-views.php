@@ -98,8 +98,8 @@ function jp_post_views_display() {
 		$view = sprintf(
 			esc_html(
 				_n(
-					'%s ',
-					'%s ',
+					'%s',
+					'%s',
 					$views['total'],
 					'post-views-for-jetpack'
 				)

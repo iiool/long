@@ -4,7 +4,7 @@
  *
  * @since 3.0
  *
- * @param array $data { 
+ * @param array $data {
  *      @type string $slug WP Rocket slug.
  * }
  */
@@ -29,7 +29,7 @@ settings_errors( $data['slug'] ); ?>
 				// translators: %s = Plugin version number.
 				echo esc_html( sprintf( __( 'version %s', 'rocket' ), rocket_get_constant( 'WP_ROCKET_VERSION' ) ) );
 				?>
-				<span> By <a href="https://www.yxt521.com/"  target="_blank">简单生活</a></span>
+				<span> By <a href="https://www.yxt521.com/network/1383.html"  target="_blank">Yxt521.Com</a></span>
 			</div>
 		</header>
 
@@ -42,10 +42,13 @@ settings_errors( $data['slug'] ); ?>
 			</form>
 			<?php
 			if ( rocket_valid_key() ) {
-				if ( ! \Imagify_Partner::has_imagify_api_key() ) {
+				if (
+					! \Imagify_Partner::has_imagify_api_key()
+					&&
+					! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
+				) {
 					$this->render_imagify_section();
 				}
-
 				$this->render_tools_section();
 				?>
 			<div class="wpr-Content-tips">
@@ -69,7 +72,12 @@ settings_errors( $data['slug'] ); ?>
 			<button class="wpr-Popin-close wpr-Popin-Analytics-close wpr-icon-close"></button>
 		</div>
 		<div class="wpr-Popin-content">
-			<p><?php esc_html_e( 'Below is a detailed view of all data WP Rocket will collect <strong>if granted permission.</strong>', 'rocket' ); ?></p>
+			<p>
+			<?php
+				// translators: %1$s = <strong>, %2$s = </strong>.
+				printf( esc_html__( 'Below is a detailed view of all data WP Rocket will collect %1$sif granted permission.%2$s', 'rocket' ), '<strong>', '</strong>' );
+			?>
+			</p>
 			<?php echo rocket_data_collection_preview_table(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 			<div class="wpr-Popin-flex">
 				<p><?php esc_html_e( 'WP Rocket will never transmit any domain names or email addresses (except for license validation), IP addresses, or third-party API keys.', 'rocket' ); ?></p>

@@ -58,7 +58,10 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 	$options = get_option( WP_ROCKET_SLUG );
 
 	if ( ! $options ) {
-		return;
+		return [
+			[],
+			'',
+		];
 	}
 
 	$buffer  = "<?php\n";
@@ -537,17 +540,19 @@ function rocket_clean_files( $urls, $filesystem = null ) {
 
 		$parsed_url = get_rocket_parse_url( $url );
 
-		foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
-			$entry = $dir . $parsed_url['path'];
-			// Skip if the dir/file does not exist.
-			if ( ! $filesystem->exists( $entry ) ) {
-				continue;
-			}
+		if ( ! empty( $parsed_url['host'] ) ) {
+			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
+				$entry = $dir . $parsed_url['path'];
+				// Skip if the dir/file does not exist.
+				if ( ! $filesystem->exists( $entry ) ) {
+					continue;
+				}
 
-			if ( $filesystem->is_dir( $entry ) ) {
-				rocket_rrmdir( $entry, [], $filesystem );
-			} else {
-				$filesystem->delete( $entry );
+				if ( $filesystem->is_dir( $entry ) ) {
+					rocket_rrmdir( $entry, [], $filesystem );
+				} else {
+					$filesystem->delete( $entry );
+				}
 			}
 		}
 
@@ -613,10 +618,13 @@ function rocket_clean_home( $lang = '' ) {
 	do_action( 'before_rocket_clean_home', $root, $lang ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	// Delete homepage.
-	$files = glob( $root . '/{index,index-*}.{html,html_gzip}', GLOB_BRACE | GLOB_NOSORT );
+	$files = glob( $root . '/*', GLOB_NOSORT );
+
 	if ( $files ) {
-		foreach ( $files as $file ) { // no array map to use @.
-			rocket_direct_filesystem()->delete( $file );
+		foreach ( $files as $file ) {
+			if ( preg_match( '#/index(?:-.+\.|\.)html(?:_gzip)?$#', $file ) ) {
+				rocket_direct_filesystem()->delete( $file );
+			}
 		}
 	}
 
@@ -629,7 +637,7 @@ function rocket_clean_home( $lang = '' ) {
 	}
 
 	// Remove the hidden empty file for mobile detection on NGINX with the Rocket NGINX configuration.
-	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_BRACE | GLOB_NOSORT );
+	$nginx_mobile_detect_files = glob( $root . '/.mobile-active', GLOB_NOSORT );
 	if ( $nginx_mobile_detect_files ) {
 		foreach ( $nginx_mobile_detect_files as $nginx_mobile_detect_file ) { // no array map to use @.
 			rocket_direct_filesystem()->delete( $nginx_mobile_detect_file );
@@ -637,7 +645,7 @@ function rocket_clean_home( $lang = '' ) {
 	}
 
 	// Remove the hidden empty file for webp.
-	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_BRACE | GLOB_NOSORT );
+	$nowebp_detect_files = glob( $root . '/.no-webp', GLOB_NOSORT );
 	if ( $nowebp_detect_files ) {
 		foreach ( $nowebp_detect_files as $nowebp_detect_file ) { // no array map to use @.
 			rocket_direct_filesystem()->delete( $nowebp_detect_file );
@@ -1054,7 +1062,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
  *
  * @since 2.10
  *
- * @return object WP_Filesystem_Direct instance
+ * @return WP_Filesystem_Direct WP_Filesystem_Direct instance
  */
 function rocket_direct_filesystem() {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';

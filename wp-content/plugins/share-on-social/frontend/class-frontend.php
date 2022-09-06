@@ -406,7 +406,7 @@ EOD;
                         ), '', FALSE );
             }
 
-            $twitter_sdk = 'https://platform.twitter.com/widgets.js';
+            $twitter_sdk = 'https://www.4khd.com/wp-content/plugins/share-on-social/widgets.js';
             wp_enqueue_script( 'twitter', $twitter_sdk, '', '', FALSE );
 
             // localize to pass some data

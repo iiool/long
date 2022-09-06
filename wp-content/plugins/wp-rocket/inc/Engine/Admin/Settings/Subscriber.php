@@ -133,7 +133,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function add_imagify_page( $navigation ) {
-		if ( Imagify_Partner::has_imagify_api_key() ) {
+		if (
+			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
+			||
+			Imagify_Partner::has_imagify_api_key()
+		) {
 			return $navigation;
 		}
 
@@ -144,5 +148,21 @@ class Subscriber implements Subscriber_Interface {
 		];
 
 		return $navigation;
+	}
+
+	/**
+	 * Displays the radio option sub fields
+	 *
+	 * @since 3.10
+	 *
+	 * @param array $option_data array of option_id and sub_fields of the option.
+	 *
+	 * @return void
+	 */
+	public function display_radio_options_sub_fields( $option_data ) {
+		if ( empty( $option_data['sub_fields'] ) ) {
+			return;
+		}
+		$this->page->display_radio_options_sub_fields( $option_data['sub_fields'] );
 	}
 }

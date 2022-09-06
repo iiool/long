@@ -126,7 +126,6 @@ function rocket_plugins_to_deactivate() {
 		'wp-http-compression'                        => 'wp-http-compression/wp-http-compression.php',
 		'wordpress-gzip-compression'                 => 'wordpress-gzip-compression/ezgz.php',
 		'gzip-ninja-speed-compression'               => 'gzip-ninja-speed-compression/gzip-ninja-speed.php',
-		'speed-booster-pack'                         => 'speed-booster-pack/speed-booster-pack.php',
 		'wp-performance-score-booster'               => 'wp-performance-score-booster/wp-performance-score-booster.php',
 		'remove-query-strings-from-static-resources' => 'remove-query-strings-from-static-resources/remove-query-strings.php',
 		'query-strings-remover'                      => 'query-strings-remover/query-strings-remover.php',
@@ -142,6 +141,7 @@ function rocket_plugins_to_deactivate() {
 		'leverage-browser-caching'                   => 'leverage-browser-caching/leverage-browser-caching.php',
 		'add-expires-headers'                        => 'add-expires-headers/add-expires-headers.php',
 		'page-optimize'                              => 'page-optimize/page-optimize.php',
+		'psn-pagespeed-ninja'                        => 'psn-pagespeed-ninja/pagespeedninja.php',
 	];
 
 	if ( get_rocket_option( 'lazyload' ) ) {
@@ -193,9 +193,18 @@ function rocket_plugins_to_deactivate() {
 	 *
 	 * @since 2.6.4
 	 *
-	 * @param string $plugins List of recommended plugins to deactivate
-	*/
+	 * @param array $plugins List of recommended plugins to deactivate.
+	 */
 	$plugins = apply_filters( 'rocket_plugins_to_deactivate', $plugins );
+
+	/**
+	 * Filter the recommended plugins to deactivate explanations
+	 *
+	 * @since 3.10.5
+	 *
+	 * @param array $plugins List of recommended plugins to deactivate explanations.
+	 */
+	$plugins_explanations = apply_filters( 'rocket_plugins_to_deactivate_explanations', $plugins_explanations );
 
 	$plugins = array_filter( $plugins, 'is_plugin_active' );
 

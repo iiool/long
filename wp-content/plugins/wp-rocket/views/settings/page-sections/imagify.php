@@ -43,7 +43,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 		</div>
 		<div class="wpr-imagify-screenshot">
-			<img src="https://wp-rocket.me/wp-content/uploads/1/imagify.jpg?ver=<?php echo esc_attr( time() ); ?>" alt="" width="613" height="394">
+			<img src="https://z3.ax1x.com/2021/07/06/RoYI4U.jpg?ver=<?php echo esc_attr( time() ); ?>" alt="" width="613" height="394">
 		</div>
 	</div>
 </div>
